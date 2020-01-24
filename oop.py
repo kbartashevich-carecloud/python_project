@@ -105,7 +105,7 @@ class Planet:
         self.population = population or []
 
     def add_human(self, human):
-        print(f"Welcome to {self.name}, {human.name}")
+        print(f"Welcome to {self.name}, {human._name}")
         self.population.append(human)
 
 
@@ -113,3 +113,98 @@ mars = Planet("Mars")
 bob = Human("Bob")
 mars.add_human(bob)
 print(mars.population)
+
+class Event:
+
+    def __init__(self, description, event_date):
+        self.description = description
+        self.date = event_date
+
+    def __str__(self):
+        return f"Event \"{self.description}\" at {self.date}"
+
+    @classmethod
+    def from_string(cls, user_input):
+        description = extract_description(user_input)
+        date = extract_date(user_input)
+        return cls(description, date)
+
+def extract_description(user_string):
+    return "открытие чемпионата мира по футболу"
+
+
+def extract_date(user_string):
+    return date(2018, 6, 14)
+
+from datetime import date
+
+event_description = "Tell something new"
+event_date = date.today()
+
+event = Event(event_description, event_date)
+print(event)
+
+
+event = Event.from_string("""добавить в мой календарь открытие
+чемпионата мира по футболу на 14 июня 2018 года""")
+print(event)
+
+
+print(dict.fromkeys("12345"))
+
+class Human:
+
+    def __init__(self, name, age=0):
+        self.name = name
+        self.age = age
+
+    @staticmethod
+    def is_age_valid(age):
+        return 0 < age < 150
+
+print(Human.is_age_valid(35))
+
+human = Human("Old Bobby")
+print(human.is_age_valid(234))
+
+
+class Robot:
+
+    def __init__(self, power):
+        self._power = power
+
+    power = property()
+
+    @power.setter
+    def power(self, value):
+        if value < 0:
+            self._power = 0
+        else:
+            self._power = value
+
+    @power.getter
+    def power(self):
+        return self._power
+
+    @power.deleter
+    def power(self):
+        print("Make robot useless")
+        del self._power
+
+wall_e = Robot(100)
+wall_e.power = -20
+print(wall_e.power)
+del wall_e.power
+
+
+class Robot:
+    def __init__(self, power):
+        self.power = power
+
+    @property
+    def power(self):
+        return self._power
+
+wall_e = Robot(200)
+wall_e.power
+
