@@ -24,3 +24,4 @@ else:
 
 print(median)
 print(statistics.median(numbers))
+

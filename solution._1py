@@ -1,0 +1,14 @@
+class FileReader:
+
+    def __init__(self, file):
+        self._file_path = file
+
+    def read(self):
+        try:
+            with open(self._file_path) as file:
+                data = file.read()
+                return data
+        except FileNotFoundError:
+            return ''
+
+
