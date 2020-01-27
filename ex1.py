@@ -136,26 +136,58 @@ import threading
 #         a.release()
 #         b.release()
 
-class Queue(object):
-    def __init__(self, size=5):
-        self._size = size
-        self._queue = []
-        self._mutex = threading.RLock()
-        self._empty = threading.Condition(self._mutex)
-        self._full = threading.Condition(self._mutex)
+# class Queue(object):
+#     def __init__(self, size=5):
+#         self._size = size
+#         self._queue = []
+#         self._mutex = threading.RLock()
+#         self._empty = threading.Condition(self._mutex)
+#         self._full = threading.Condition(self._mutex)
+#
+#     def put(self, val):
+#         with self._full:
+#             while len(self._queue) >= self._size:
+#                 self._full.wait()
+#             self._queue.append(val)
+#             self._empty.notify()
+#
+#     def get(self):
+#         with self._empty:
+#             while len(self._queue) == 0:
+#                 self._empty.wait()
+#             ret = self._queue.pop(0)
+#             self._full.notify()
+#             return ret
 
-    def put(self, val):
-        with self._full:
-            while len(self._queue) >= self._size:
-                self._full.wait()
-            self._queue.append(val)
-            self._empty.notify()
+# import time
+# import os
+#
+# pid = os.fork()
+#
+# if pid == 0:
+#     print("Child process: ", os.getpid())
+#     time.sleep(2)
+# else:
+#     print("Parent process: ", os.getpid())
+#     os.wait()
 
-    def get(self):
-        with self._empty:
-            while len(self._queue) == 0:
-                self._empty.wait()
-            ret = self._queue.pop(0)
-            self._full.notify()
-            return ret
+from threading import Thread
+import time
 
+def count(n):
+    while n > 0:
+        n -= 1
+
+t0 = time.time()
+count(100_000_000)
+count(100_000_000)
+print(time.time() - t0)
+
+#parallel run
+t0 = time.time()
+th1 = Thread(target=count, args=(100_000_000,))
+th2 = Thread(target=count, args=(100_000_000,))
+
+th1.start(); th2.start()
+th1.join(); th2.join()
+print(time.time() - t0)
