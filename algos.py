@@ -31,11 +31,43 @@ def is_permutation(str_a="", str_b=""):
 
     return False
 
-
 def urlify(string=""):
     if not string:
         return string
 
     return string.strip().replace(" ", "%20")
 
-print(urlify("Mr John Smith    "))
+def palindrome_perm(string=""):
+    new_str = string.lower().replace(" ", "")
+    found_one = False
+    is_odd = None
+
+    if new_str == "":
+        return True
+
+    is_odd = len(new_str) % 2 == 0
+
+    letter_map = dict()
+
+    for chr in new_str:
+        letter_map[chr] = letter_map.setdefault(chr, 0) + 1
+
+    for key in letter_map:
+        val = letter_map[key]
+
+        if not is_odd:
+
+            if val == 1 and not found_one:
+                found_one = True
+                continue
+            elif val == 1 and found_one:
+                return False
+
+        if val != 2:
+            return False
+
+    return True
+
+print(palindrome_perm("roza a zor"))
+
+
